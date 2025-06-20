@@ -1,0 +1,42 @@
+[custom]
+;不要随意改变关键字，否则会导致出错
+;acl4SSR规则 仅GFW代理，其他直连。保留本地和国内IP分流规则,带兜底规则
+
+;去广告：不支持
+;自动测速：支持
+;微软分流：不支持
+;苹果分流：不支持
+;增强中国IP段：支持
+;增强国外GFW：支持
+
+ruleset=🎯 全球直连,[]GEOSITE,private
+ruleset=🎯 全球直连,[]GEOIP,private,no-resolve
+ruleset=🎯 全球直连,https://github.moeyy.xyz/https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/LocalAreaNetwork.list,28800
+;ruleset=🛑 全球拦截,https://github.moeyy.xyz/https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list,28800
+;ruleset=🍃 应用净化,https://github.moeyy.xyz/https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanProgramAD.list,28800
+ruleset=🌍 节点代理,[]GEOSITE,gfw
+ruleset=🎯 全球直连,https://github.moeyy.xyz/https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaIp.list,28800
+ruleset=🎯 全球直连,https://github.moeyy.xyz/https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaDomain.list,28800
+ruleset=🎯 全球直连,https://github.moeyy.xyz/https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaCompanyIp.list,28800
+;由于 GEOSITE,gfw收录不全，此处留有 ProxyGFWlist作为墙内域名 兜底
+ruleset=🌍 节点代理,https://github.moeyy.xyz/https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyGFWlist.list,28800
+;ruleset=🎯 全球直连,[]GEOIP,LAN
+;由于 OpenClash 使用的大陆白名单收录不全，此处留有 geosite:cn 作为国内域名 兜底
+ruleset=🎯 全球直连,[]GEOSITE,CN
+;由于 OpenClash 使用的大陆白名单收录不全，此处留有 geoip:cn 作为国内 IP 兜底
+ruleset=🎯 全球直连,[]GEOIP,CN,no-resolve
+;以上兜底规则会根据实际情况随时取消
+ruleset=🐟 规则外直连,[]FINAL
+
+custom_proxy_group=🚀 手动切换`select`.*
+custom_proxy_group=🌍 节点代理`select`[]🚀 手动切换`[]♻️ 自动选择`[]🚫 拒绝`.*
+custom_proxy_group=♻️ 自动选择`url-test`.*`http://www.gstatic.com/generate_204`300,,3600
+custom_proxy_group=🎯 全球直连`select`[]➡ 直连
+;custom_proxy_group=🛑 全球拦截`select`[]🚫 拒绝
+;custom_proxy_group=🍃 应用净化`select`[]🚫 拒绝
+custom_proxy_group=🐟 规则外直连`select`[]➡ 直连`[]🚀 手动切换`[]🌍 节点代理`[]♻️ 自动选择`.*
+custom_proxy_group=➡ 直连`select`[]DIRECT
+custom_proxy_group=🚫 拒绝`select`[]REJECT
+
+enable_rule_generator=true
+overwrite_original_rules=true
